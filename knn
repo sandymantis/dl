@@ -1,0 +1,61 @@
+import torch
+import torchvision
+from torchvision.transforms import Compose, Resize, ToTensor
+from PIL import Image
+import matplotlib.pyplot as plt
+
+# **Step 1: Dataset Preparation**
+# Define the image size and transformations
+size = (128, 128)
+transform = Compose([
+    Resize(size),
+    ToTensor()
+])
+
+# Load the Flowers102 dataset
+train_dataset = torchvision.datasets.Flowers102(
+    "./flowers", "train", transform=transform, download=True
+)
+test_dataset = torchvision.datasets.Flowers102(
+    "./flowers", "train", transform=transform, download=True
+)
+
+# **Step 2: Visualizing Images**
+def visualize_image(img: torch.Tensor) -> Image.Image:
+    return Image.fromarray(
+        (img.permute(1, 2, 0) * 255).to(torch.uint8).numpy()
+    )
+
+# Visualize the first 40 images
+f, ax = plt.subplots(4, 10, figsize=(12, 6))
+for i, (im, l) in enumerate(list(train_dataset)[:40]):
+    ax[i // 10, i % 10].imshow(visualize_image(im))
+    ax[i // 10, i % 10].set_title(l)
+    ax[i // 10, i % 10].axis("off")
+plt.tight_layout()
+plt.show()
+
+# **Step 3: Prepare Classes**
+class_0 = list(train_dataset)[:10]
+class_1 = list(train_dataset)[10:20]
+class_01 = class_0 + class_1  # Combined class
+
+# **Step 4: KNN Classifier**
+def knn_classifier(x, k=3):
+    dist = [((x - im).pow(2).sum(), l) for im, l in class_01]
+    k_closest = [l for _, l in sorted(dist)[:k]]
+    return sorted(k_closest)[k // 2]  # Return the median of the k closest labels
+
+# **Step 5: Accuracy Calculation for Classifier**
+accuracy = sum(knn_classifier(x) == l for x, l in list(test_dataset)[:20]) / 20
+print(f"KNN Classifier Accuracy: {accuracy:.2f}")
+
+# **Step 6: KNN Regression**
+def knn_regression(x, k=3):
+    dist = [((x - im).pow(2).sum(), l) for im, l in class_01]
+    k_closest = [l for _, l in sorted(dist)[:k]]
+    return torch.mean(torch.tensor(k_closest).float())
+
+# **Step 7: Example for KNN Regression**
+predicted_value = knn_regression(test_dataset[3][0])
+print(f"KNN Regression Predicted Value: {predicted_value.item()}")
