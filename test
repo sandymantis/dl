@@ -6,3 +6,9 @@ if torch.backends.mps.is_available():
 else:
     device = torch.device("cpu")
     print("MPS is not available. Using CPU.")
+
+
+
+
+model = model.to(device)  # Move model to MPS (GPU)
+input_tensor = input_tensor.to(device)  # Move input data to MPS
