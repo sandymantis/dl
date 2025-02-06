@@ -39,3 +39,36 @@ def visualize_image(img: torch.Tensor) -> Image.Image:
 # Visualize the first image in the train dataset
 visualize_image(train_dataset[1][0])
 
+
+
+train_images = torch.stack([im for im, _ in train_dataset], dim=0)  # Stack all images in the train dataset
+train_label = torch.tensor([label for _, label in train_dataset])  # Extract labels from the train dataset
+
+
+import matplotlib.pyplot as plt
+
+f, ax = plt.subplots(4, 10, figsize=(10, 5))
+
+for i, (im, l) in enumerate(list(train_dataset)[:40]):
+    ax[i // 10, i % 10].imshow(visualize_image(im))
+    ax[i // 10, i % 10].set_title(l)
+    ax[i // 10, i % 10].axis('off')
+
+
+model = torch.nn.Linear(128 * 128 * 3, 1)  # Define a linear model
+loss = torch.nn.MSELoss()  # Define the loss function
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01)  # Define the optimizer
+
+for epoch in range(10):  # Training loop for 10 epochs
+    pred_label = model(train_images.view(-1, 128 * 128 * 3))  # Forward pass
+    print(pred_label.shape, train_label.shape)  # Print the shape of the prediction and target
+
+    loss_val = loss(pred_label.view(-1), train_label.float())  # Compute the loss
+
+    optimizer.zero_grad()  # Zero the gradients
+    loss_val.backward()  # Backpropagation
+    optimizer.step()  # Update the weights
+
+    print(f"Epoch {epoch}, loss {loss_val.item()}")  # Print loss for the epoch
+
+
