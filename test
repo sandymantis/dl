@@ -12,3 +12,30 @@ else:
 
 model = model.to(device)  # Move model to MPS (GPU)
 input_tensor = input_tensor.to(device)  # Move input data to MPS
+
+
+
+import torchvision
+import torch
+from PIL import Image
+
+# Create a vector of zeros of size 5
+size = (128, 128)
+
+# Define transformations for resizing and converting to tensor
+transform = torchvision.transforms.Compose([
+    torchvision.transforms.Resize(size),
+    torchvision.transforms.ToTensor()
+])
+
+# Load the Flowers102 dataset for training and testing
+train_dataset = list(torchvision.datasets.Flowers102("./flowers", "train", transform=transform, download=True))
+test_dataset = list(torchvision.datasets.Flowers102("./flowers", "test", transform=transform, download=True))
+
+# Define a function to visualize an image
+def visualize_image(img: torch.Tensor) -> Image.Image:
+    return Image.fromarray((img.permute(1, 2, 0) * 255).to(torch.uint8).numpy())
+
+# Visualize the first image in the train dataset
+visualize_image(train_dataset[1][0])
+
