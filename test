@@ -1,0 +1,8 @@
+import torch
+
+if torch.backends.mps.is_available():
+    device = torch.device("mps")
+    print("MPS is available! Using MPS device.")
+else:
+    device = torch.device("cpu")
+    print("MPS is not available. Using CPU.")
