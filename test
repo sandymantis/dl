@@ -9,6 +9,23 @@ else:
 
 
 
+Hereâ€™s a summary of the key points:
+1. Current Scope of Gaps in Care API
+â€¢ The API is read-only and provides providers with a list of open gaps for the current calendar year (p only, not re).
+â€¢ The data flows from a/b â†’ Snowflake (historical storage) â†’ Cosmos DB (API data).
+â€¢ Only current-year gaps are stored in Cosmos DB to ensure providers focus on what they are incentivized to close.
+2. Challenges & Enhancements Needed
+a. Soft Closure Tracking
+â€¢ Today, there is no way to record if a provider is actively working on closing a gap (soft closure).
+â€¢ This creates an issue where multiple providers may unknowingly work on the same gap, leading to inefficiencies.
+â€¢ A real-time mechanism to capture ongoing work needs to be implemented.
+b. Data Load Strategy for Cosmos DB
+â€¢ Need to ensure up-to-date open gaps data in Cosmos DB, regardless of whether using an incremental or full load strategy.
+â€¢ Review audit mechanisms to confirm completeness and accuracy.
+c. Expanding API Scope to Support Non-U Populations
+â€¢ Currently supports only U patients; needs to be extended to non-U populations.
+â€¢ Needs to handle gaps identified through home and community programs for both U and non-U 
+â€¢ Transform into a packaged API to support broader use cases.
 
 model = model.to(device)  # Move model to MPS (GPU)
 input_tensor = input_tensor.to(device)  # Move input data to MPS
