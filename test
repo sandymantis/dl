@@ -9,6 +9,70 @@ else:
 
 
 
+
+Yes, you’ve captured the distinction well between pseudo-claims and the need for tracking ongoing gap closure efforts.
+
+Pseudo-Claims
+	•	Used when a gap has actually been closed, but no real claim will be generated.
+	•	Typically submitted by approved internal sources (IQ, HPMC, CM, etc.).
+	•	Serves as a hard closure mechanism in the system.
+	•	Recognized and approved by auditors to confirm the closure.
+	•	Not used to indicate that a gap is merely being worked on—it confirms that the work has been completed.
+
+The Untracked Work-in-Progress Issue
+	•	When a provider is working with a member (e.g., recommending a lab test but it hasn’t been done yet), the system currently does not capture this as an active effort.
+	•	This leads to duplicate outreach from other internal teams (campaign managers, etc.), wasting resources and affecting member experience.
+	•	There needs to be a way to record that work is in progress—not as a pseudo-claim, but as a separate status indicating that someone is actively working to close the gap.
+
+Potential Solutions
+	1.	Introduce a “Work-in-Progress” Status
+	•	A separate mechanism (e.g., an interim status in the system) to indicate that a provider or internal resource is actively working to close the gap.
+	•	This would prevent redundant member outreach efforts.
+	2.	Enhance Internal Communication
+	•	Ensure that different teams (IQ, HPMC, CM, campaign managers) have visibility into ongoing gap closure efforts before initiating additional interventions.
+
+
+
+
+Centralized Pseudo-Claim Generation via API
+
+Current Challenge:
+	•	Multiple approved internal systems (IQ, HPMC, CM, etc.) independently generate pseudo-claims.
+	•	This creates duplication, inconsistency, and additional maintenance overhead.
+	•	Each system must separately ensure compliance with pseudo-claim approval rules.
+
+Proposed Solution:
+	•	Introduce a centralized API that acts as the single point of pseudo-claim generation.
+	•	Instead of each system manually generating pseudo-claims, they simply call this API when a gap closure needs to be recorded.
+	•	The API validates and processes the request, then triggers the pseudo-claim generation centrally.
+
+Implementation Options:
+	1.	Synchronous API Call Approach:
+	•	Each system (IQ, CM, HPMC, etc.) calls the API when they determine a gap is closed.
+	•	The API processes the request and generates a pseudo-claim under a unified logic.
+	•	Ensures consistency across systems.
+	2.	Event-Driven Approach:
+	•	Instead of requiring explicit API calls, use event triggers.
+	•	Example: When CM or HPMC marks a gap as closed in their system, it automatically fires an event.
+	•	The pseudo-claim engine listens to this event and generates a pseudo-claim.
+	•	This reduces direct integration points and allows for more scalable automation.
+
+Benefits of a Centralized Approach:
+	•	Consistency & Compliance: Ensures all pseudo-claims follow the same rules and approval processes.
+	•	Reduced Maintenance: Instead of maintaining pseudo-claim logic in multiple systems, it is managed centrally.
+	•	Scalability & Automation: Event-driven or API-triggered processing reduces manual intervention.
+	•	Improved Tracking & Auditing: Since all pseudo-claims are generated from a single source, tracking and reporting become easier.
+
+Next Steps
+
+Would it make sense to first define the key data points that such an API would need? For example:
+	•	Member ID
+	•	Gap Type
+	•	Closure Source (IQ, CM, HPMC, etc.)
+	•	Date of Closure
+	•	Evidence or Supporting Data (if required)
+
+That way, we can design an API that aligns with both current and future needs. Thoughts?
  
 
 model = model.to(device)  # Move model to MPS (GPU)
