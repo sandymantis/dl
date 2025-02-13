@@ -20,6 +20,26 @@ test_dataset = torchvision.datasets.Flowers102(
     "./flowers", "train", transform=transform, download=True
 )
 
+import torch
+import torch.nn as nn
+
+class MyModel(torch.nn.Module):
+    def __init__(self, layer_size=[512, 512, 512]) -> None:
+        super().__init__()
+        layers = []
+        layers.append(torch.nn.Flatten())
+        c = 128 * 128 * 3
+        for s in layer_size:
+            layers.append(torch.nn.Linear(c, s))
+            layers.append(torch.nn.ReLU())
+            c = s
+        layers.append(torch.nn.Linear(c, 102))
+        self.model = torch.nn.Sequential(*layers)
+
+    def forward(self, x) -> Any:
+        return self.model(x)
+
+
 # **Step 2: Visualizing Images**
 def visualize_image(img: torch.Tensor) -> Image.Image:
     return Image.fromarray(
