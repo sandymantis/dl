@@ -12,6 +12,133 @@ transform = Compose([
     ToTensor()
 ])
 
+//
+
+from torchvision import datasets
+from torchvision.transforms import ToTensor
+
+train_data = datasets.FashionMNIST(root="data", train=True, download=True, transform=ToTensor())
+test_data = datasets.FashionMNIST(root="data", train=False, download=True, transform=ToTensor())
+
+# Extract train and test labels
+train_data_labels = train_data.targets
+test_data_labels = test_data.targets
+
+
+import matplotlib.pyplot as plt
+figure = plt.figure(figsize=(8, 8))
+figure.add_subplot(1,6,1)
+
+i=1000
+img, label = train_data[i]
+# print("img squeeze ", img.squeeze().shape)
+# print("img without squeeze ", img.shape)
+
+plt.title(label)
+# plt.axis("off")
+plt.imshow(img.squeeze(), cmap="gray")
+
+# figure.add_subplot(1,6,6)
+# img, label = train_data[200]
+
+# plt.title(label)
+# plt.imshow(img.squeeze(), cmap="gray")
+
+
+# plt.show()
+
+
+# Model definition #
+
+model = torch.nn.Linear(28*28,10)
+# model.parameters() #returns the weights and bias
+loss = torch.nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(), 0.1)
+
+# Training Step #
+
+# print("Weights = ", model.weight.shape)
+# print("Bias = ", model.bias)
+
+wt_mean_square = model.weight.pow(2).mean()
+print("Weights MSE before training", wt_mean_square.item())
+
+bias_mean_square = model.bias.pow(2).mean()
+print("Bias MSE before training", bias_mean_square.item())
+
+metrics = {"train_acc": [], "val_acc": []}
+
+for i in range(60000):
+    pred = model(train_data[i][0].squeeze().flatten())
+    # print("Pred = ", pred)
+    # print("Label = ", train_data[i][1])
+    # print("Step ", i)
+
+    optimizer.zero_grad()
+    loss_val = loss(pred,torch.tensor(train_data[i][1]))
+    loss_val.backward()
+    # print("Weights Grad = ", model.weight.grad.pow(2).mean().item())
+    optimizer.step()
+    train_acc = (torch.argmax(pred) == train_data[i][1]).sum()
+    print("Pred = ", torch.argmax(pred), " Label = ", train_data[i][1], " Match = ", torch.argmax(pred) == train_data[i][1])
+    metrics["train_acc"].append(train_acc.item())
+
+
+# print("Weights = ", model.weight)
+# print("Bias = ", model.bias)
+print("metrics[train_acc] = ", metrics["train_acc"])
+print("Accuracy % = ", sum(metrics["train_acc"]) / len(metrics["train_acc"]) * 100)
+
+
+wt_mean_square = model.weight.pow(2).mean()
+print("Weights MSE after training", wt_mean_square.item())
+
+bias_mean_square = model.bias.pow(2).mean()
+print("Bias MSE after training", bias_mean_square.item())
+
+
+
+# Validation #
+metrics = {"val_acc": [], "preds": []}
+
+labels_map = {
+    0: "T-Shirt",
+    1: "Trouser",
+    2: "Pullover",
+    3: "Dress",
+    4: "Coat",
+    5: "Sandal",
+    6: "Shirt",
+    7: "Sneaker",
+    8: "Bag",
+    9: "Ankle Boot",
+}
+
+for i in range(10000):
+    pred = model(train_data[i][0].squeeze().flatten())
+    # print(torch.argmax(pred)==train_data[i][1])
+    metrics["preds"].append(labels_map[torch.argmax(pred).item()])
+    acc = (torch.argmax(pred)==train_data[i][1]).sum()
+    metrics["val_acc"].append(acc.item())
+
+print("Accuracy % =", sum(metrics["val_acc"])/ len(metrics["val_acc"]) * 100)
+print("Pred Accuracy =",metrics["val_acc"] )
+print("Predictions =",metrics["preds"] )
+
+import matplotlib.pyplot as plt
+figure = plt.figure(figsize=(8, 8))
+figure.add_subplot(1,6,1)
+
+i=2
+img, label = test_data[i]
+# print("img squeeze ", img.squeeze().shape)
+# print("img without squeeze ", img.shape)
+
+plt.title(label)
+# plt.axis("off")
+plt.imshow(img.squeeze(), cmap="gray")
+
+//
 # Load the Flowers102 dataset
 train_dataset = torchvision.datasets.Flowers102(
     "./flowers", "train", transform=transform, download=True
