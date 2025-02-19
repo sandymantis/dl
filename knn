@@ -14,30 +14,6 @@ transform = Compose([
 
 //
 
-### Summary of the Need for Clinical Ontologies  
-
-There are three primary needs driving the requirement for clinical ontologies and associated services:  
-
-1. **Data Deduplication and Standardization (API Side)**  
-   - Clinical data comes from multiple sources, each using different coding systems.  
-   - A unified view of data (conditions, allergies, procedures, etc.) requires translating these disparate codes into a single standardized coding system.  
-   - The goal is to deduplicate and standardize data using terminology services, enabling consistency across clinical domains.  
-
-2. **Data Cleaning for Analytical Use**  
-   - The same standardized data used in APIs also feeds into the analytical store.  
-   - This requires translation and deduplication to ensure the analytical dataset is clean, high-quality, and consistent for analysis.  
-
-3. **Value Set Creation for Cohort Identification**  
-   - For analytical use cases, specific value sets need to be built for conditions like Chronic Kidney Disease (CKD).  
-   - This involves identifying all related codes across different coding systems to create a comprehensive value set.  
-   - These value sets enable accurate patient cohort curation and deeper analytics.  
-
-### Why Ontologies and Translation Services are Needed  
-- A structured ontology ensures consistency across multiple data sources.  
-- Terminology services enable real-time translation and standardization.  
-- Value set lookups help in precise cohort creation for clinical and analytical needs.  
-
-Together, these solutions help improve data integrity, enable robust analytics, and ensure interoperability across healthcare systems.
 
 from torchvision import datasets
 from torchvision.transforms import ToTensor
