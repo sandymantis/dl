@@ -13,6 +13,10 @@ transform = Compose([
 ])
 
 //
+Thanks for your time yesterday. I wanted to summarize the key point of why I reached out.
+Over the past few years, whenever we discussed talent strategy, you always took the names of A and B in the same breath. My understanding was that you were advocating for both of us—it just hadn’t been approved due to organizational constraints. However, given how things unfolded this year, there seems to be a shift from our past discussions, which is why I had these questions.
+I know you were short on time yesterday, so I would like to continue this conversation when you're back. In the meantime, I will work with Kristy on the proposed operating model for arch.
+Safe travels!
 
 
 from torchvision import datasets
