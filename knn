@@ -51,17 +51,6 @@ class ConvNet(nn.Module):
         return self.network(x)
 
 
-I’d like to take a moment to share some reflections on our talent strategy. A few recent decisions has sparked conversations around fairness, transparency, and meritocracy. While this perspective may differ from the prevailing view, I encourage you to consider it with an open mind, as I truly believe that with time and reflection, the broader issue will become clearer.
-
-I genuinely appreciate the time and effort our leadership team invests in identifying the right talent. I have no doubt that the intentions behind these decisions are well-meaning and that significant thought goes into the process. However, a few decisions has sparked conversations around fairness, transparency, and meritocracy. Hence, it’s worth asking—where might we be falling short? A part of me wishes that talent decisions were as straightforward as a game of tennis, where you step onto the court, play, and the winner is clear for all to see. Unfortunately, talent decisions aren’t as objective, which is where the challenge arises.
-Right now, many of our decisions seem to be shaped by perception and second-hand information rather than direct, firsthand evaluation. This naturally creates an environment where individuals or their delegates feel the need to manage perceptions rather than focus purely on impact. Over time, this can lead to a culture of inauthenticity—not because anyone intends for it to happen, but as an unintended consequence of the way our system is structured. Such a system can also introduce bias or subjectivity. While this isn’t a reflection of any single decision or person, it’s a systemic challenge that deserves attention.
-So, how do we address this in a way that strengthens fairness, transparency, and objectivity? One approach I would like to propose is implementing a panel evaluation process for key talent decisions—especially promotions for levels 31+, where the number of eligible candidates per year is relatively small.
-In this setup, candidates would have the opportunity to present their body of work directly to a qualified, independent panel that includes members of the leadership team. This would allow decision-makers to assess contributions firsthand rather than relying on second-hand information or perception. At the same time, it gives candidates a structured platform to articulate their impact, receive actionable feedback, and understand what they can do to continue growing.
-Given the size and scale of our team, it’s understandable that not everyone in the leadership team will have deep familiarity with every candidate’s work. A panel-based approach would help bridge that gap by providing a more objective, consistent, and transparent evaluation process.
-This is not about questioning past decisions but about enhancing the process for the future. The goal is to create a process that is not only fair and transparent but also provides a level playing field where every individual has an equal opportunity to be assessed on their true impact.
-I appreciate your time and consideration and look forward to any thoughts you may have on this.
-
-I also like your suggestion of having eligible candidates work independently on some of the pressing problems and come back with proposals. This will allow for an objective assessment, where the candidates can be evaluated based on the quality of work, craftsmanship and the thought process that they put in. 
 
 
 
