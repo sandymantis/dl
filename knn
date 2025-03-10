@@ -13,45 +13,30 @@ transform = Compose([
 ])
 
 import torch
+import torchvision.transforms as transforms
+from PIL import Image
 import matplotlib.pyplot as plt
 
-# Create model instance
-net = Classifier()
+# Load an image from file
+image_path = "your_image.jpg"  # Replace with your image path
+image = Image.open(image_path).convert("RGB")  # Ensure it's RGB (3 channels)
 
-# Generate a sample input image (Batch=1, Channels=3, Height=64, Width=64)
-x = torch.randn(1, 3, 64, 64)
-x_orig = x.clone()
+# Define transformations
+transform = transforms.Compose([
+    transforms.Resize((64, 64)),  # Resize to 64x64
+    transforms.ToTensor(),  # Convert to tensor (C, H, W)
+])
 
-# Dictionary to store feature maps
-feature_maps = {}
+# Apply transformations
+x = transform(image)  # Shape: (3, 64, 64)
 
-# Forward pass through each layer sequentially
-with torch.no_grad():
-    for i, layer in enumerate(net.network):  # Assuming net.network is nn.Sequential
-        x = layer(x)  # Pass through layer
-        feature_maps[f'Layer {i}'] = x  # Store activation
+# Add batch dimension to match (1, 3, 64, 64)
+x = x.unsqueeze(0)  # Shape: (1, 3, 64, 64)
 
-# Convert input image to NumPy for visualization
-input_image = x_orig.squeeze(0).permute(1, 2, 0).numpy()  # Convert to (H, W, C)
-print(input_image.shape)
-
-# Plot input image
-plt.figure(figsize=(10, 5))
-plt.subplot(1, 2, 1)
-plt.imshow(input_image, cmap="gray")
-plt.title("Input Image")
+# Display the loaded image
+plt.imshow(image)
+plt.title("Loaded Image")
 plt.axis("off")
-
-# Plot feature map from an intermediate layer (e.g., Layer 2)
-layer_idx = 1  # Choose which layer to visualize
-feature_map = feature_maps[f'Layer {layer_idx}'].squeeze(0)[0].numpy()  # Take first channel
-print(feature_map.shape)
-
-plt.subplot(1, 2, 2)
-plt.imshow(feature_map, cmap="viridis")
-plt.title(f"Feature Map from Layer {layer_idx}")
-plt.axis("off")
-
 plt.show()
 
 
