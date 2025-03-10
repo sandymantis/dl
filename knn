@@ -1,3 +1,56 @@
+import matplotlib.pyplot as plt
+import torch
+
+def plot_feature_maps(feature_map, layer_name, num_cols=8):
+    """
+    Plots all feature maps (channels) of a given layer.
+
+    Args:
+        feature_map (torch.Tensor): Feature maps from a given layer (C, H, W) where
+                                    C is the number of channels.
+        layer_name (str): Name of the layer.
+        num_cols (int): Number of columns in the grid plot.
+    """
+    # Ensure feature_map is a tensor and move to CPU if necessary
+    feature_map = feature_map.cpu().detach().numpy()  # Convert to NumPy after ensuring it's on CPU
+
+    # Extract dimensions: C = Channels, H = Height, W = Width
+    C, H, W = feature_map.shape  # Explicitly showing that index 0 is the channel
+
+    print(f"Feature Map Shape: {C} channels, {H} height, {W} width")  # Debug info
+
+    # Compute number of rows based on the number of channels
+    num_rows = (C + num_cols - 1) // num_cols  # Ensure all feature maps are displayed
+
+    # Create subplots
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, num_rows * 2))
+    fig.suptitle(f"Feature Maps of {layer_name}", fontsize=14)
+
+    # Flatten axes array if num_rows == 1
+    if num_rows == 1:
+        axes = [axes]
+
+    # Plot each feature map (channel)
+    for i in range(C):
+        row, col = divmod(i, num_cols)
+        ax = axes[row][col] if num_rows > 1 else axes[col]
+        # ax.imshow(feature_map[i], cmap="gray")  # Correctly plotting each channel
+        ax.imshow(feature_map[i])  # Correctly plotting each channel
+
+        ax.axis("off")
+        ax.set_title(f"Ch {i}")  # Channel index explicitly shown
+
+    # Hide any unused subplots
+    for j in range(i + 1, num_cols * num_rows):
+        row, col = divmod(j, num_cols)
+        axes[row][col].axis("off")
+
+    plt.show()
+
+# Example usage
+
+
+
 import torch
 import torchvision
 from torchvision.transforms import Compose, Resize, ToTensor
