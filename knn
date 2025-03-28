@@ -1,3 +1,88 @@
+import torch
+import numpy as np
+from PIL import Image
+
+im = Image.open('rose.jpeg')
+im_small = im.resize((128, 128))
+im_small
+
+
+class FourierFeatures(torch.nn.Module):
+    def __init__(self, num_features=256, scale=10.0):
+        super().__init__()
+        self.B = torch.randn((2, num_features)) * scale  # 2 input dims (x, y)
+
+    def forward(self, x):
+        x_proj = 2 * torch.pi * x @ self.B.to(x.device)
+        return torch.cat([torch.sin(x_proj), torch.cos(x_proj)], dim=-1)
+
+class Rose(torch.nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        # self.enc = torch.nn.Identity()
+        self.enc = torch.nn.Sequential(
+            torch.nn.Linear(2, 64),
+            torch.nn.ReLU(),
+            torch.nn.Linear(64, 512),
+        )
+        # self.enc = FourierFeatures(256)
+        self.net = torch.nn.Sequential(
+            # torch.nn.Linear(2, 256),
+            torch.nn.Linear(512, 256),
+            torch.nn.ReLU(),
+            torch.nn.Linear(256, 128),
+            torch.nn.ReLU(),
+            torch.nn.Linear(128, 64),
+            torch.nn.ReLU(),
+            torch.nn.Linear(64, 3),
+        )
+
+    def forward(self, x):
+        return self.net(self.enc(x))
+
+rose_tensor = torch.as_tensor(np.array(im_small), dtype=torch.float32) / 255. - 0.5
+position = torch.stack(torch.meshgrid(torch.linspace(-1, 1, 128), torch.linspace(-1, 1, 128)), dim=-1)
+
+net = Rose()
+
+# rose_tensor = rose_tensor.cuda()
+# position = position.cuda()
+# net = net.cuda()
+
+optim = torch.optim.Adam(net.parameters(), lr=1e-3)
+for it in range(1000):
+    optim.zero_grad()
+    loss = abs(net(position) - rose_tensor).mean()
+    if it % 100 == 0:
+        print("Epoch ", it, " ,", float(loss))
+    loss.backward()
+    optim.step()
+
+
+i=128
+position = torch.stack(torch.meshgrid(torch.linspace(-1, 1, i), torch.linspace(-1, 1, i)), dim=-1)
+
+# position = torch.stack(torch.meshgrid(torch.linspace(-1, 1, 256), torch.linspace(-1, 1, 256)), dim=-1)
+
+Image.fromarray(((net(position) + 0.5).clamp(0, 1) * 255).cpu().to(torch.uint8).numpy())
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-1, 1, 100)
+# x= torch.randn(10)
+# for w in [1, 5, 20]:
+for w in [10]:
+    plt.plot(x, np.sin(w * x), label=f'sin({w}x)')
+
+plt.legend()
+plt.title("Wave patterns created by sin(w * x)")
+plt.grid(True)
+plt.show()
+
+
+
 import matplotlib.pyplot as plt
 import torch
 
