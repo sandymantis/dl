@@ -91,3 +91,23 @@
   <app-footer></app-footer>
 </body>
 </html>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const canvas = document.getElementById("canvas-area");
+    const nav = document.getElementById("navbar");
+
+    nav.addEventListener("click", function (event) {
+      const li = event.target.closest("li[data-component]");
+      if (!li) return;
+
+      const componentName = li.getAttribute("data-component");
+
+      // Clear canvas
+      canvas.innerHTML = "";
+
+      // Create and add the new custom element
+      const element = document.createElement(componentName);
+      canvas.appendChild(element);
+    });
+  });
+</script>
