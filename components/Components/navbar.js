@@ -82,6 +82,15 @@ class AppNavbar extends HTMLElement {
       this.shadowRoot.getElementById('nav-telemedicine')?.addEventListener('click', () => this.loadComponent('telemedicine-dashboard'));
       this.shadowRoot.getElementById('nav-health-profile')?.addEventListener('click', () => this.loadComponent('health-profile-dashboard'));
       this.shadowRoot.getElementById('nav-care-plans')?.addEventListener('click', () => this.loadComponent('care-plan-dashboard'));
+   const navItems = this.shadowRoot.querySelectorAll('li[id]');
+
+navItems.forEach((item) => {
+  const id = item.id; // e.g., "telemedicine"
+  const componentTag = `${id}-dashboard`; // → "telemedicine-dashboard"
+
+  item.addEventListener('click', () => this.loadComponent(componentTag));
+});
+
     }
 
     loadComponent(tagName) {
