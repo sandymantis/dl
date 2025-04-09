@@ -126,3 +126,104 @@ setupEventListeners() {
   });
 }
 
+
+import openai
+
+# ✅ System message (from earlier)
+system_message = {
+    "role": "system",
+    "content": """
+You are a web developer assistant responsible for updating the navigation bar of a web application based on user requests.
+
+You will be given:
+1. A list of components. Each component includes:
+   - `id`: the unique identifier of the component (used as the `id` attribute in the navbar <li>).
+   - `name`: the display name to show in the navbar.
+   - `description`: a brief summary of what the component does (used to infer intent).
+
+2. The current `navbar.html` content (which contains a list of <li> elements in a <ul>).
+
+3. A user request in natural language. The request may include multiple intents such as:
+   - Adding one or more new components to the navbar.
+   - Removing existing components from the navbar.
+   - Updating the position/order of components.
+   - Replacing components with others.
+
+Your task is to:
+- Analyze the user request.
+- Match any mentioned functionalities to components in the provided list using their `name`, `id`, or `description`.
+- If matching components are found:
+  - Update the `navbar.html` by modifying the <ul> inside the <nav> to reflect the request.
+  - Use the matched component's `id` as the `id` attribute in the <li>.
+  - Use the component's `name` as the text shown in the <li>.
+
+Rules:
+- If a component from the user request does not match any component in the provided list, ignore it.
+- If no matches are found at all, return the `navbar.html` unchanged.
+- Do not modify anything outside the <ul> in `navbar.html`.
+- Ensure the final HTML remains valid.
+
+Your response must include only the updated `navbar.html`, without explanation or extra text.
+"""
+}
+
+# ✅ Example component list
+components = [
+    {
+        "id": "member-search",
+        "name": "Member Search",
+        "description": "Component used to look up members etc..."
+    },
+    {
+        "id": "health-profile-dashboard",
+        "name": "Health Profile",
+        "description": "Shows the patient's full health record"
+    },
+    {
+        "id": "care-plan-dashboard",
+        "name": "Care Plans",
+        "description": "Used to manage patient care plans"
+    }
+]
+
+# ✅ Current navbar.html (just the relevant part — the <ul> inside <nav>)
+navbar_html = """
+<nav>
+  <div class="left">
+    <div class="logo">Care Management</div>
+    <ul>
+      <li id="health-profile-dashboard">Health Profile</li>
+      <li id="care-plan-dashboard">Care Plans</li>
+    </ul>
+  </div>
+  <div class="avatar" title="Logged in user">PR</div>
+</nav>
+"""
+
+# ✅ User's natural language request
+user_prompt = "Please add functionality to search for members and remove the care plans option."
+
+# ✅ Combine all into one user message
+user_message = {
+    "role": "user",
+    "content": f"""Component List:
+{components}
+
+Current navbar.html:
+{navbar_html}
+
+User request:
+{user_prompt}
+"""
+}
+
+# ✅ Send to OpenAI
+response = openai.ChatCompletion.create(
+    model="gpt-4",
+    messages=[system_message, user_message]
+)
+
+# ✅ Output
+updated_navbar_html = response['choices'][0]['message']['content']
+print(updated_navbar_html)
+
