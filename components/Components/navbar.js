@@ -100,3 +100,29 @@ navItems.forEach((item) => {
   }
 
   customElements.define('app-navbar', AppNavbar);
+
+
+
+async render() {
+  const response = await fetch('/path/to/navbar.html');
+  const navHtml = await response.text();
+
+  this.shadowRoot.innerHTML = `
+    <style>
+      /* your CSS styles */
+    </style>
+    ${navHtml}
+  `;
+
+  this.setupEventListeners();
+}
+
+setupEventListeners() {
+  const navItems = this.shadowRoot.querySelectorAll('li[id]');
+  navItems.forEach(item => {
+    const id = item.id;
+    const componentTag = `${id}-dashboard`;
+    item.addEventListener('click', () => this.loadComponent(componentTag));
+  });
+}
+
