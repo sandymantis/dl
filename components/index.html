@@ -132,3 +132,23 @@ footer {
   padding: 1rem;
   text-align: center;
 }
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const navbar = document.querySelector('app-navbar');
+
+    // Wait for the shadow DOM to be populated
+    const checkNavReady = setInterval(() => {
+      const shadowRoot = navbar.shadowRoot;
+      if (!shadowRoot) return;
+
+      const firstNavItem = shadowRoot.querySelector('ul > li');
+      if (firstNavItem) {
+        clearInterval(checkNavReady);
+        const firstId = firstNavItem.id;
+        if (firstId && !window.location.pathname.includes(firstId)) {
+          window.location.href = `/${firstId}`;
+        }
+      }
+    }, 50);
+  });
+</script>
