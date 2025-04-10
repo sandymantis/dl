@@ -136,19 +136,24 @@ footer {
   window.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('app-navbar');
 
-    // Wait for the shadow DOM to be populated
+    // Wait for navbar to render (since it's async)
     const checkNavReady = setInterval(() => {
-      const shadowRoot = navbar.shadowRoot;
-      if (!shadowRoot) return;
+      const shadow = navbar.shadowRoot;
+      if (!shadow) return;
 
-      const firstNavItem = shadowRoot.querySelector('ul > li');
-      if (firstNavItem) {
+      const firstItem = shadow.querySelector('ul > li');
+      if (firstItem) {
         clearInterval(checkNavReady);
-        const firstId = firstNavItem.id;
-        if (firstId && !window.location.pathname.includes(firstId)) {
-          window.location.href = `/${firstId}`;
+
+        const componentTag = `${firstItem.id}-dashboard`; // e.g. "member-search-dashboard"
+        
+        // Load the component into canvas
+        const canvas = document.getElementById('app-content');
+        if (canvas) {
+          canvas.innerHTML = `<${componentTag}></${componentTag}>`;
         }
       }
     }, 50);
   });
 </script>
+
