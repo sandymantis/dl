@@ -1,0 +1,23 @@
+<footer class="footer">
+  <p>© 2025 Care Management App. All rights reserved.</p>
+</footer>
+
+
+.footer {
+  background-color: #f3f3f3;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#app-content {
+  flex: 1;
+}
