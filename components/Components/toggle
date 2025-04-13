@@ -98,3 +98,18 @@ export class NavbarComponent {}
   display: flex;
   gap: 1rem;
 }
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  padding: 1rem;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  flex-wrap: wrap; /* allow wrapping if window gets very narrow */
+}
