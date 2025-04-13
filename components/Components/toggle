@@ -53,3 +53,48 @@ img {
   width: 80px;
   height: 80px;
 }
+
+
+
+
+
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-navbar',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
+})
+export class NavbarComponent {}
+
+
+<nav class="navbar">
+  <div class="nav-title">🎤 VoiceApp</div>
+  <div class="nav-links">
+    <!-- Future links can go here -->
+  </div>
+</nav>
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-title {
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
