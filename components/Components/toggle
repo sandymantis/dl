@@ -113,3 +113,29 @@ export class NavbarComponent {}
   box-sizing: border-box;
   flex-wrap: wrap; /* allow wrapping if window gets very narrow */
 }
+
+
+
+.mic-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+img {
+  width: 80px;
+  height: 80px;
+  max-width: 100%;
+}
+
+.status {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: #555;
+  padding: 0 1rem;
+  word-wrap: break-word;
+}
