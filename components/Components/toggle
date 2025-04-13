@@ -1,0 +1,55 @@
+<div class="mic-container">
+  <button *ngIf="!isRecording" (click)="startRecording()">
+    <img src="assets/mic_idle.png" alt="Start Recording" />
+  </button>
+
+  <button *ngIf="isRecording" (click)="stopRecording()">
+    <img src="assets/mic_active.png" alt="Stop Recording" />
+  </button>
+</div>
+
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-mic-toggle',
+  templateUrl: './mic-toggle.component.html',
+  styleUrls: ['./mic-toggle.component.css']
+})
+export class MicToggleComponent {
+  isRecording = false;
+
+  startRecording() {
+    this.isRecording = true;
+    this.record();
+  }
+
+  stopRecording() {
+    this.isRecording = false;
+    this.record();
+  }
+
+  record() {
+    console.log(this.isRecording ? 'Recording started...' : 'Recording stopped.');
+  }
+}
+
+
+
+.mic-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+img {
+  width: 80px;
+  height: 80px;
+}
